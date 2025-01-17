@@ -79,16 +79,21 @@
                 progressBarFull.style.width = 100 * progress + "%";
             }).then((unityInstance) => {
                 loadingBar.style.display = "none";
-                // Получаем ID пользователя из Telegram Web App API
+
+                // Функция для получения ID пользователя из Telegram
                 function GetTelegramUserID() {
-                    const tg = window.Telegram.WebApp;
-                    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                        const userID = tg.initDataUnsafe.user.id;
-                        // Передаем ID в Unity
-                        unityInstance.SendMessage('GameManager', 'OnUserIDReceived', userID);
+                    if (window.Telegram && window.Telegram.WebApp) {
+                        const tg = window.Telegram.WebApp;
+                        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                            const userID = tg.initDataUnsafe.user.id;
+                            // Передаем ID в Unity
+                            unityInstance.SendMessage('GameManager', 'OnUserIDReceived', userID);
+                        } else {
+                            // Если ID не найден, вызываем функцию с ошибкой
+                            unityInstance.SendMessage('GameManager', 'OnUserIDNotFound');
+                        }
                     } else {
-                        // Если ID не найден, вызываем функцию с ошибкой
-                        unityInstance.SendMessage('GameManager', 'OnUserIDReceived', 'ID not found');
+                        console.error("Telegram WebApp API is not available.");
                     }
                 }
 
