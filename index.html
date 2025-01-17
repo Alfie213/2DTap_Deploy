@@ -101,7 +101,7 @@
                 unityInstance.SendMessage('GameManager', 'OnUserIDReceived', userID);
             } else {
                 // Если id не найден, передаем сообщение об этом
-                unityInstance.SendMessage('GameManager', 'OnUserIDReceived', 'User ID not found');
+                unityInstance.SendMessage('GameManager', 'OnUserIDNotFound');
             }
         }
 
